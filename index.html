@@ -9,13 +9,48 @@
             height: 6in;
             font-size: 18px;
             font-family: "Noto Sans Devanagari", "Mangal", sans-serif;
+            padding: 10px;
+        }
+        .status {
+            font-size: 14px;
+            color: gray;
+            font-family: sans-serif;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
 
     <h2>हिंदी टाइप करें</h2>
-    <textarea placeholder="यहाँ हिंदी में टाइप करें..."></textarea>
+    <textarea id="hindiTextbox" placeholder="यहाँ हिंदी में टाइप करें..."></textarea>
+    
+    <div id="statusIndicator" class="status">सहेजा गया (Saved)</div>
+
+    <script>
+        const textbox = document.getElementById('hindiTextbox');
+        const status = document.getElementById('statusIndicator');
+
+        // 1. When the page loads, check if there is any previously saved text
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedText = localStorage.getItem('savedHindiText');
+            if (savedText) {
+                textbox.value = savedText;
+            }
+        });
+
+        // 2. Every time you type or delete a character, automatically save it
+        textbox.addEventListener('input', () => {
+            status.textContent = "सहेज रहा है... (Saving...)";
+            
+            // Save the current text to the browser's storage
+            localStorage.setItem('savedHindiText', textbox.value);
+            
+            // Brief delay to simulate a smooth "Saved" notification
+            setTimeout(() => {
+                status.textContent = "सहेजा गया (Saved)";
+            }, 300);
+        });
+    </script>
 
 </body>
 </html>
